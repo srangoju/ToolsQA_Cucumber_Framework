@@ -2,94 +2,131 @@ package stepDefinitions;
 
 import java.util.concurrent.TimeUnit;
 
-import org.junit.Assert;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.Select;
 
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import dataProvider.ConfigFileReader;
+import managers.PageObjectManager;
+import pageObjects.HomePage;
+import pageObjects.TopDealsPage;
 
 public class Steps {
 	WebDriver driver;
+	HomePage<ConfigFileReader> homePage;
+	TopDealsPage topDealsPage;
+	PageObjectManager pageObjectManager;
+	ConfigFileReader configFileReader;
 
+	@SuppressWarnings("unchecked")
 	@Given("^user is on Home Page$")
-	public void user_is_on_Home_Page(){
-		System.setProperty("webdriver.chrome.driver","F:\\BrowserDrivers\\chromedriver.exe");
+	public void user_is_on_Home_Page() throws Throwable{	
+		System.setProperty("webdriver.chrome.driver",configFileReader.getDriverPath());
 		driver = new ChromeDriver();
 		driver.manage().window().maximize();
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-		driver.get("https://rahulshettyacademy.com/seleniumPractise/#/");
+		driver.manage().timeouts().implicitlyWait(configFileReader.getImplicitlyWait(), TimeUnit.SECONDS);
+		pageObjectManager = new PageObjectManager(driver);
+		homePage = pageObjectManager.getHomePage();
+		homePage.navigateToHomePage();	
+		
 	}
-
-	@When("^he search for \"([^\"]*)\"$")
-	public void he_search_for(String arg1)  {
-		driver.findElement(By.xpath("//input[@placeholder='Search for Vegetables and Fruits']")).sendKeys(arg1);
-		String exp_message = "Brocolli - 1 Kg";
-		String actual = driver.findElement(By.cssSelector("#root > div > div.products-wrapper > div > div > h4")).getText();
-		Assert.assertEquals(exp_message, actual);
-	}
-
-	@And("^click on Add to Cart$")
-	public void click_on_Add_to_Cart() {
-
-		driver.findElement(By.xpath("//button[normalize-space()='ADD TO CART']")).click();
+	
+	@When("^click on top dealers link$")
+	public void click_on_top_dealers_link() throws Throwable {	
+		pageObjectManager = new PageObjectManager(driver);
+		topDealsPage = pageObjectManager.getTopDealsPage();
+		topDealsPage.clickOnTopDeals();
 
 	}
 
-	@And("^click on bag$")
-	public void click_on_bag() {
-
-		driver.findElement(By.xpath("//img[@alt='Cart']")).click();
-
+	@Then("^user should navigate to top deals page$")
+	public void user_should_navigate_to_top_deals_page() throws Throwable {
+		pageObjectManager = new PageObjectManager(driver);
+		topDealsPage = pageObjectManager.getTopDealsPage();
+		topDealsPage.enterItem("Wheat");
 	}
-
-	@And("^click on proceed to checkout$")
-	public void click_on_proceed_to_checkout() {
-
-		driver.findElement(By.xpath("//button[normalize-space()='PROCEED TO CHECKOUT']")).click();
-
-	}
-
-	@And("^click on place order$")
-	public void click_on_place_order() {
-
-		driver.findElement(By.xpath("//button[normalize-space()='Place Order']")).click();
-
-	}
-
-	@And("^choose country$")
-	public void choose_country(){
-
-		WebElement chooseCountry = driver.findElement(By.cssSelector("div[class='wrapperTwo'] div select"));
-		chooseCountry.click();	
-		Select objSelect = new Select(chooseCountry);
-		objSelect.selectByValue("India");
-	}
-
-	@And("^check Agree Terms and conditions$")
-	public void check_agree_terms_and_conditions() {
-
-		driver.findElement(By.xpath("//input[@type='checkbox']")).click();
-
-	}
-
-	@And("^click on proceed button$")
-	public void click_on_proceed_button() {
-
-		driver.findElement(By.xpath("//button[normalize-space()='Proceed']")).click();
-
-	}
-	@Then("^validate success message$")
-	public void validate_success_message()  {
-		String exp_message = "Thank you, your order has been placed successfully";
-		String actual = driver.findElement(By.xpath("//span[contains(text(),\"Thank you, your order has been placed successfully\")]")).getText();
-		Assert.assertEquals(exp_message, actual);
-	}
+	
 }
+
+	/*
+	 * @When("^he search for \"([^\"]*)\"$") public void he_search_for(String arg1)
+	 * throws Throwable { driver.findElement(By.
+	 * xpath("//input[@placeholder='Search for Vegetables and Fruits']")).sendKeys(
+	 * arg1); String exp_message = "Brocolli - 1 Kg"; String actual =
+	 * driver.findElement(By.
+	 * cssSelector("#root > div > div.products-wrapper > div > div > h4")).getText()
+	 * ; Assert.assertEquals(exp_message, actual); }
+	 * 
+	 * @When("^click on Add to Cart$") public void click_on_Add_to_Cart() throws
+	 * Throwable{
+	 * 
+	 * driver.findElement(By.xpath("//button[normalize-space()='ADD TO CART']")).
+	 * click();
+	 * 
+	 * }
+	 * 
+	 * @When("^click on bag$") public void click_on_bag() throws Throwable{
+	 * 
+	 * driver.findElement(By.xpath("//img[@alt='Cart']")).click();
+	 * 
+	 * }
+	 * 
+	 * @When("^click on proceed to checkout$") public void
+	 * click_on_proceed_to_checkout() throws Throwable{
+	 * 
+	 * driver.findElement(By.
+	 * xpath("//button[normalize-space()='PROCEED TO CHECKOUT']")).click();
+	 * 
+	 * }
+	 * 
+	 * @When("^click on place order$") public void click_on_place_order() throws
+	 * Throwable{
+	 * 
+	 * driver.findElement(By.xpath("//button[normalize-space()='Place Order']")).
+	 * click();
+	 * 
+	 * }
+	 * 
+	 * @When("^choose country$") public void choose_country() throws Throwable{
+	 * 
+	 * WebElement chooseCountry =
+	 * driver.findElement(By.cssSelector("div[class='wrapperTwo'] div select"));
+	 * chooseCountry.click(); Select objSelect = new Select(chooseCountry);
+	 * objSelect.selectByValue("India"); }
+	 * 
+	 * @When("^check Agree Terms and conditions$") public void
+	 * check_agree_terms_and_conditions() throws Throwable{
+	 * 
+	 * driver.findElement(By.xpath("//input[@type='checkbox']")).click();
+	 * 
+	 * }
+	 * 
+	 * @When("^click on proceed button$") public void click_on_proceed_button()
+	 * throws Throwable{
+	 * 
+	 * driver.findElement(By.xpath("//button[normalize-space()='Proceed']")).click()
+	 * ;
+	 * 
+	 * }
+	 * 
+	 * @Then("^validate success message$") public void validate_success_message()
+	 * throws Throwable{ String exp_message =
+	 * "Thank you, your order has been placed successfully"; String actual =
+	 * driver.findElement(By.
+	 * xpath("//span[contains(text(),\"Thank you, your order has been placed successfully\")]"
+	 * )).getText(); Assert.assertEquals(exp_message, actual); }
+	 * 
+	 *     When he search for "Brocolli"
+    When click on Add to Cart
+    When click on bag 
+    When click on proceed to checkout
+    When click on place order
+    When choose country
+    When check Agree Terms and conditions
+    When click on proceed button
+    Then validate success message
+	 */
 
 	
