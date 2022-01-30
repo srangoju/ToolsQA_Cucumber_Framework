@@ -1,17 +1,15 @@
 package pageObjects;
 
-import java.util.Properties;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
+import managers.FileReaderManager;
 
-public class HomePage<ConfigFileReader> {
+
+public class HomePage {
 	
-	private WebDriver driver;
+	WebDriver driver;
 	ConfigFileReader configFileReader;
-	private Properties properties;
-	private final String propertyFilePath= "configs//Configuration.properties";
 	
 	public HomePage(WebDriver driver) { 
 		this.driver = driver;
@@ -19,13 +17,8 @@ public class HomePage<ConfigFileReader> {
 	}
 	
 	public void navigateToHomePage() {
-		driver.get(((HomePage) configFileReader).getApplicationUrl());
+		driver.get(FileReaderManager.getInstance().getConfigReader().getApplicationUrl());
 	}
 
-	private String getApplicationUrl() {
-		String url = properties.getProperty("url");
-		if(url != null) return url;
-		else throw new RuntimeException("url not specified in the Configuration.properties file.");
-	}
 	
 }

@@ -1,32 +1,30 @@
 package stepDefinitions;
 
 import java.util.concurrent.TimeUnit;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import dataProvider.ConfigFileReader;
+import pageObjects.ConfigFileReader;
 import managers.PageObjectManager;
+import managers.FileReaderManager;
+import managers.WebdriverManager;
 import pageObjects.HomePage;
 import pageObjects.TopDealsPage;
 
 public class Steps {
 	WebDriver driver;
-	HomePage<ConfigFileReader> homePage;
+	HomePage homePage;
 	TopDealsPage topDealsPage;
 	PageObjectManager pageObjectManager;
 	ConfigFileReader configFileReader;
+	WebdriverManager webDriverManager;
 
-	@SuppressWarnings("unchecked")
 	@Given("^user is on Home Page$")
 	public void user_is_on_Home_Page() throws Throwable{	
-		System.setProperty("webdriver.chrome.driver",configFileReader.getDriverPath());
-		driver = new ChromeDriver();
-		driver.manage().window().maximize();
-		driver.manage().timeouts().implicitlyWait(configFileReader.getImplicitlyWait(), TimeUnit.SECONDS);
+		webDriverManager = new WebdriverManager() ;
+		driver = webDriverManager.getDriver();
 		pageObjectManager = new PageObjectManager(driver);
 		homePage = pageObjectManager.getHomePage();
 		homePage.navigateToHomePage();	
