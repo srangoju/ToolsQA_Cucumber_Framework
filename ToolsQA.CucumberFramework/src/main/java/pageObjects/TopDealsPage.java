@@ -22,6 +22,9 @@ public class TopDealsPage {
 		topDeals.click();
 	}
 	
+	public void verifyPageTitle() {
+		
+	}
 	public void enterItem(String itemName) {
 		searchField.sendKeys(itemName);
 	}

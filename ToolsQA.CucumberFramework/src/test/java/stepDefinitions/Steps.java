@@ -1,14 +1,12 @@
 package stepDefinitions;
 
-import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import pageObjects.ConfigFileReader;
 import managers.PageObjectManager;
-import managers.FileReaderManager;
 import managers.WebdriverManager;
 import pageObjects.HomePage;
 import pageObjects.TopDealsPage;
@@ -39,8 +37,17 @@ public class Steps {
 
 	}
 
-	@Then("^user should navigate to top deals page$")
-	public void user_should_navigate_to_top_deals_page() throws Throwable {
+	@When("^user navigate to top deals page$")
+	public void user_navigate_to_top_deals_page() throws Throwable {
+		pageObjectManager = new PageObjectManager(driver);
+		topDealsPage = pageObjectManager.getTopDealsPage();
+		topDealsPage.enterItem("Wheat");
+		
+		//div[@class='brand greenLogo']//div[@class='brand greenLogo']
+	}
+	
+	@Then("^enter item in searchbox$")
+	public void enter_item_in_searchbox() throws Throwable {
 		pageObjectManager = new PageObjectManager(driver);
 		topDealsPage = pageObjectManager.getTopDealsPage();
 		topDealsPage.enterItem("Wheat");

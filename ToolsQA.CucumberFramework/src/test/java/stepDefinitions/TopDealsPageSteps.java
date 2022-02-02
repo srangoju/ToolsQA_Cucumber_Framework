@@ -1,18 +1,8 @@
 package stepDefinitions;
 
-import java.util.concurrent.TimeUnit;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-
 import cucumber.TestContext;
-import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import pageObjects.ConfigFileReader;
-import managers.PageObjectManager;
-import managers.FileReaderManager;
-import managers.WebdriverManager;
-import pageObjects.HomePage;
 import pageObjects.TopDealsPage;
 
 public class TopDealsPageSteps {
